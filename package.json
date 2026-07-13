@@ -1,0 +1,12 @@
+{
+  "name": "b2b-data-sync-pipeline",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "dev:dashboard": "npm run dev --workspace=apps/dashboard"
+  }
+}
