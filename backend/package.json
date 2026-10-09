@@ -5,7 +5,13 @@
   "version": "1.0.0",
   "description": "Backend API for the AI-powered B2B data sync pipeline",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/hello.ts",
+    "typecheck": "tsc --noEmit"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
 }
