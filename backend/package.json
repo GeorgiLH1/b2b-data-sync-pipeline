@@ -1,0 +1,11 @@
+{
+  "name": "backend",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Backend API for the AI-powered B2B data sync pipeline",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "UNLICENSED"
+}
