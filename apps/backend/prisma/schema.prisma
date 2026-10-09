@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. Tablica za produktite (sinhroniziranite danni)
+model Product {
+  id          String   @id @default(uuid())
+  externalId  String   @unique @map("external_id")
+  title       String
+  category    String?
+  price       Float
+  description String?
+  rawPayload  Json?    @map("raw_payload")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+// 2. Tablica za statusa na sinhronizaciite
+model SyncLog {
+  id         String     @id @default(uuid())
+  source     String     // e.g. "Business_A_API"
+  status     SyncStatus @default(PENDING)
+  itemsCount Int        @default(0) @map("items_count")
+  startedAt  DateTime   @default(now()) @map("started_at")
+  endedAt    DateTime?  @map("ended_at")
+  errors     ErrorLog[]
+
+  @@map("sync_logs")
+}
+
+enum SyncStatus {
+  PENDING
+  IN_PROGRESS
+  SUCCESS
+  FAILED
+}
+
+// 3. Tablica za greshki pri obrabotka
+model ErrorLog {
+  id        String   @id @default(uuid())
+  syncLogId String   @map("sync_log_id")
+  syncLog   SyncLog  @relation(fields: [syncLogId], references: [id], onDelete: Cascade)
+  message   String
+  stack     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("error_logs")
+}
