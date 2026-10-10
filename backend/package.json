@@ -5,7 +5,6 @@
   "version": "1.0.0",
   "description": "Backend API for the AI-powered B2B data sync pipeline",
   "scripts": {
-    "dev": "tsx watch src/hello.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
