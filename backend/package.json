@@ -6,12 +6,16 @@
   "description": "Backend API for the AI-powered B2B data sync pipeline",
   "scripts": {
     "dev": "tsx watch src/hello.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/node": "^26.6.4",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
   }
 }
