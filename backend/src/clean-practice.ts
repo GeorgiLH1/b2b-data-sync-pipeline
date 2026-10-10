@@ -1,4 +1,4 @@
-import {isValid, cleanProduct} from"./products.js";
+import { isValid, cleanProduct } from "./products.js";
 import type { RawProduct, CleanProduct } from "./products.js";
 
 const rawProducts: RawProduct[] = [
@@ -11,21 +11,21 @@ const rawProducts: RawProduct[] = [
 const cleaned: CleanProduct[] = [];
 const rejected: string[] = [];
 
-for(const product of rawProducts){
-    if(isValid(product)){
-        cleaned.push(cleanProduct(product));
-    } else{
-        rejected.push(`Product ${product.id} rejected: invalid title or price.`);
-    }
+for (const product of rawProducts) {
+  if (isValid(product)) {
+    cleaned.push(cleanProduct(product));
+  } else {
+    rejected.push(`Product ${product.id} rejected: invalid title or price.`);
+  }
 }
 
 console.log("Accepted: " + cleaned.length);
 console.log("Rejected: " + rejected.length);
 
-for(const message of rejected){
-    console.log(message);
+for (const message of rejected) {
+  console.log(message);
 }
 
-console.log(cleaned.map((x) => x.title).join(', '));
+console.log(cleaned.map((x) => x.title).join(", "));
 console.log(cleaned.reduce((sum, x) => sum + x.price, 0).toFixed(2));
 console.log(cleaned.filter((x) => x.price > 10).map((x) => x.title));
