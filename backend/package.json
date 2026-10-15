@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "description": "Backend API for the AI-powered B2B data sync pipeline",
   "scripts": {
+    "dev": "tsx watch src/server.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -13,10 +14,14 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^26.6.4",
     "prettier": "^3.9.10",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^5.0.3"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
   }
 }
