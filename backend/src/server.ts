@@ -1,7 +1,8 @@
 import { app } from "./app.js";
+import { loadConfig } from "./config.js";
 
-const PORT = 3000;
+const config = loadConfig(process.env);
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on http://localhost:${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`Server listening on http://localhost:${config.PORT} (${config.NODE_ENV})`);
 });
