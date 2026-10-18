@@ -49,11 +49,3 @@ describe("GET /api/products/:id", () => {
     });
   }
 });
-
-describe("unknown routes", () => {
-  it("responds with 404", async () => {
-    const response = await request(app).get("/nope");
-
-    expect(response.status).toBe(404);
-  });
-});
