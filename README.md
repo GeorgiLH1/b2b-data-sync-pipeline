@@ -4,15 +4,30 @@ A web application that synchronizes product data between two businesses (Busines
 
 The goal is to make work between companies faster and reduce human mistakes.
 
-# AI-Powered B2B Data Sync Pipeline
-
-A web application that synchronizes product data between two businesses (Business A and Business B) and uses AI to clean, sort, and describe that data.
-
-The goal is to make work between companies faster and reduce human mistakes.
-
 ## Status
 
-🚧 **Work in progress.** Phase 1 is complete (project setup, TypeScript basics, unit tests). The API, database, sync logic, AI features, and dashboard are not built yet. This README is updated as features are added.
+🚧 **Work in progress.** Phases 1 and 2 are complete (project setup, TypeScript basics, unit tests, API). Database, sync logic, AI features, and dashboard are not built yet.
+
+## API
+
+The backend runs on port 3000 by default (`npm run dev` in the `backend` folder).
+
+| Method | Path                | Description                                           |
+| ------ | ------------------- | ----------------------------------------------------- |
+| GET    | `/api/health`       | Health check                                          |
+| GET    | `/api/products`     | List products (optional `?category=` filter)          |
+| GET    | `/api/products/:id` | One product (400 for an invalid id, 404 if not found) |
+
+Unknown routes return `404` and unexpected errors return `500`, both as JSON.
+
+## Configuration
+
+Settings are read from environment variables and validated at startup.
+
+| Variable   | Default       | Description                                |
+| ---------- | ------------- | ------------------------------------------ |
+| `PORT`     | `3000`        | Port the server listens on (1 to 65535)    |
+| `NODE_ENV` | `development` | One of `development`, `test`, `production` |
 
 ## Planned features
 
@@ -39,8 +54,14 @@ The goal is to make work between companies faster and reduce human mistakes.
 ```text
 backend/
   src/
-    products.ts        # product validation and cleaning rules
-    products.test.ts   # unit tests for those rules
+    server.ts            # starts the server (reads config, listens on a port)
+    app.ts               # the Express app: routes and middleware
+    config.ts            # validates settings from environment variables
+    middleware.ts        # JSON 404 and 500 handlers
+    products.ts          # product validation and cleaning rules
+    routes/
+      products.ts        # /api/products endpoints
+    *.test.ts            # unit and API tests
 ```
 
 ## Getting started
@@ -51,7 +72,10 @@ Requirements: Node.js 22 or newer, and npm.
 cd backend
 npm install
 npm test
+npm run dev
 ```
+
+The API is then available at http://localhost:3000/api/health
 
 ## Development commands
 
