@@ -20,6 +20,8 @@ The backend runs on port 3000 by default (`npm run dev` in the `backend` folder)
 
 Unknown routes return `404` and unexpected errors return `500`, both as JSON.
 
+## Database
+
 ## Configuration
 
 Settings are read from environment variables and validated at startup.
