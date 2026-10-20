@@ -12,3 +12,6 @@ dist/
 #Logs and test output
 *.Logs
 coverage/
+
+#Generated code
+backend/src/generated/

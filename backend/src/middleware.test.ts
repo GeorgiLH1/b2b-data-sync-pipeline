@@ -1,8 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 import express from "express";
 import request from "supertest";
-import { app } from "./app.js";
+import { createApp } from "./app.js";
 import { errorHandler } from "./middleware.js";
+import { createInMemoryProductRepository } from "./products/in-memory-repository.js";
+
+const app = createApp({ products: createInMemoryProductRepository([]) });
 
 describe("notFoundHandler", () => {
   it("returns JSON for an unknown route", async () => {
@@ -36,5 +39,24 @@ describe("errorHandler", () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ error: "internal server error" });
     expect(JSON.stringify(response.body)).not.toContain("hunter2");
+  });
+
+  it("turns a failing repository into a 500 JSON response", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const app = createApp({
+      products: {
+        async list() {
+          throw new Error("database is down");
+        },
+        async findById() {
+          throw new Error("database is down");
+        },
+      },
+    });
+
+    const response = await request(app).get("/api/products");
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual({ error: "internal server error" });
   });
 });
