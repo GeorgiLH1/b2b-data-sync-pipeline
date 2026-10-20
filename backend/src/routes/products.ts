@@ -1,39 +1,34 @@
 import { Router } from "express";
-import type { CleanProduct } from "../products.js";
+import type { ProductRepository } from "../products/repository.js";
 
-export const productsRouter = Router();
+const MAX_ID = 2_147_483_647;
 
-const products: CleanProduct[] = [
-  { id: 1, title: "Wireless Mouse", price: 25.5, category: "electronics" },
-  { id: 2, title: "Desk Lamp", price: 18, category: "home" },
-  { id: 3, title: "Notebook", price: 3.2, category: "uncategorized" },
-];
+export function createProductsRouter(repository: ProductRepository): Router {
+  const router = Router();
 
-productsRouter.get("/", (req, res) => {
-  const { category } = req.query;
+  router.get("/", async (req, res) => {
+    const { category } = req.query;
+    const products = await repository.list(typeof category === "string" ? category : undefined);
+    res.json(products);
+  });
 
-  if (typeof category === "string") {
-    res.json(products.filter((p) => p.category === category));
-    return;
-  }
+  router.get("/:id", async (req, res) => {
+    const id = Number(req.params.id);
 
-  res.json(products);
-});
+    if (!Number.isInteger(id) || id <= 0 || id > MAX_ID) {
+      res.status(400).json({ error: "id must be a positive integer" });
+      return;
+    }
 
-productsRouter.get("/:id", (req, res) => {
-  const id = Number(req.params.id);
+    const product = await repository.findById(id);
 
-  if (!Number.isInteger(id) || id <= 0) {
-    res.status(400).json({ error: "id must be a positive integer" });
-    return;
-  }
+    if (product === null) {
+      res.status(404).json({ error: "product not found" });
+      return;
+    }
 
-  const product = products.find((p) => p.id === id);
+    res.json(product);
+  });
 
-  if (product === undefined) {
-    res.status(404).json({ error: "product not found" });
-    return;
-  }
-
-  res.json(product);
-});
+  return router;
+}

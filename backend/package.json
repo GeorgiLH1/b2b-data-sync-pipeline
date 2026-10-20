@@ -10,7 +10,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write src",
-    "format:check": "prettier --check src"
+    "format:check": "prettier --check src",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:seed": "tsx src/scripts/seed.ts"
   },
   "license": "UNLICENSED",
   "devDependencies": {

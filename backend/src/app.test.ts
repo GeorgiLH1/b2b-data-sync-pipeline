@@ -1,6 +1,15 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { app } from "./app.js";
+import { createApp } from "./app.js";
+import { createInMemoryProductRepository } from "./products/in-memory-repository.js";
+
+const sampleProducts = [
+  { id: 1, title: "Wireless Mouse", price: 25.5, category: "electronics" },
+  { id: 2, title: "Desk Lamp", price: 18, category: "home" },
+  { id: 3, title: "Notebook", price: 3.2, category: "uncategorized" },
+];
+
+const app = createApp({ products: createInMemoryProductRepository(sampleProducts) });
 
 describe("GET /api/health", () => {
   it("responds with 200 and status ok", async () => {
@@ -40,7 +49,7 @@ describe("GET /api/products/:id", () => {
     expect(response.body).toEqual({ error: "product not found" });
   });
 
-  for (const badId of ["abc", "0", "-5", "1.5"]) {
+  for (const badId of ["abc", "0", "-5", "1.5", "2147483648"]) {
     it(`returns 400 for the invalid id "${badId}"`, async () => {
       const response = await request(app).get(`/api/products/${badId}`);
 

@@ -1,13 +1,24 @@
 import express from "express";
-import { productsRouter } from "./routes/products.js";
+import type { Express } from "express";
 import { errorHandler, notFoundHandler } from "./middleware.js";
+import type { ProductRepository } from "./products/repository.js";
+import { createProductsRouter } from "./routes/products.js";
 
-export const app = express();
+export interface AppDependencies {
+  products: ProductRepository;
+}
 
-app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok" });
-});
+export function createApp(deps: AppDependencies): Express {
+  const app = express();
 
-app.use("/api/products", productsRouter);
-app.use(notFoundHandler);
-app.use(errorHandler);
+  app.get("/api/health", (_req, res) => {
+    res.json({ status: "ok" });
+  });
+
+  app.use("/api/products", createProductsRouter(deps.products));
+
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+
+  return app;
+}
