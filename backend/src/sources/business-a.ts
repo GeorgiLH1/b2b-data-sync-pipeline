@@ -24,7 +24,7 @@ const businessAProductSchema = z.object({
   id: z.number().int().positive(),
   title: z.string().trim().min(1),
   price: z.number().nonnegative(),
-  category: z.string().optional(),
+  category: z.string().nullish(),
 });
 
 function readExternalId(record: unknown): string | null {
@@ -54,7 +54,7 @@ export function parseBusinessAProducts(payload: unknown): ParseResult {
       return;
     }
 
-    const clean = cleanProduct(result.data);
+    const clean = cleanProduct({ ...result.data, category: result.data.category ?? undefined });
     products.push({
       source: "BUSINESS_A",
       externalId: String(clean.id),
